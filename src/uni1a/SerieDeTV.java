@@ -1,33 +1,69 @@
-/**
- * Class SerieDeTV
- */
 package uni1a;
 
-// Subclase SerieDeTV que extiende de ContenidoAudiovisual
-public class SerieDeTV extends ContenidoAudiovisual {
-    private int temporadas;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
-    public SerieDeTV(String titulo, int duracionEnMinutos, String genero, int temporadas) {
-        super(titulo, duracionEnMinutos, genero);
-        this.temporadas = temporadas;
+public class SerieDeTV extends ContenidoAudiovisual {
+
+    private final List<Temporada> listaTemporadas = new LinkedList<>();
+
+    public SerieDeTV(String tit, int duracion, String gen) {
+        super(tit, duracion, gen);
+    }
+
+    public void agregarTemporada(int numTemp, int añoEstreno, int cantEpisodios) {
+        boolean datosValidos = (numTemp > 0) && (añoEstreno > 0) && (cantEpisodios > 0);
+        if (!datosValidos) {
+            System.out.println("Los datos de la temporada no son validos.");
+            return;
+        }
+
+        boolean yaExiste = this.listaTemporadas.stream()
+                .anyMatch(t -> t.getNumeroTemporada() == numTemp);
+
+        if (yaExiste) {
+            System.out.println("La temporada ya existe.");
+            return;
+        }
+
+        this.listaTemporadas.add(new Temporada(numTemp, añoEstreno, cantEpisodios));
+    }
+
+    public void eliminarTemporada(int numTemp) {
+        this.listaTemporadas.removeIf(t -> t.getNumeroTemporada() == numTemp);
     }
 
     public int getTemporadas() {
-        return temporadas;
+        return this.listaTemporadas.size();
     }
 
-    public void setTemporadas(int temporadas) {
-        this.temporadas = temporadas;
+    public List<Temporada> getListaTemporadas() {
+        return Collections.unmodifiableList(this.listaTemporadas);
     }
-    
+
     @Override
     public void mostrarDetalles() {
-        System.out.println("Detalles de la película:");
-        System.out.println("ID: " + getId());
-        System.out.println("Título: " + getTitulo());
-        System.out.println("Duración en minutos: " + getDuracionEnMinutos());
-        System.out.println("Género: " + getGenero());
-        System.out.println("Temporadas: " + this.temporadas);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Detalles de la serie de television:\n")
+          .append("ID: ").append(getId()).append("\n")
+          .append("Titulo: ").append(getTitulo()).append("\n")
+          .append("Duracion en minutos: ").append(getDuracionEnMinutos()).append("\n")
+          .append("Genero: ").append(getGenero()).append("\n")
+          .append("Cantidad de temporadas: ").append(getTemporadas()).append("\n\n")
+          .append("Informacion de las temporadas:");
+
+        System.out.println(sb.toString());
+
+        if (this.listaTemporadas.size() == 0) {
+            System.out.println("No hay temporadas registradas.");
+        } else {
+            this.listaTemporadas.forEach(temp -> {
+                temp.mostrarInformacion();
+                System.out.println("-------------------------");
+            });
+        }
+
         System.out.println();
     }
 }
