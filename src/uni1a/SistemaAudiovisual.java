@@ -27,10 +27,10 @@ public class SistemaAudiovisual {
                     crearDocumental();
                     break;
                 case 4:
-                    crearVideoMusical();
+                    crearPodcast();
                     break;
                 case 5:
-                    crearConferencia();
+                    crearCursoOnline();
                     break;
                 case 6:
                     listarCatalogo();
@@ -60,8 +60,8 @@ public class SistemaAudiovisual {
             .append("1. Registrar pelicula\n")
             .append("2. Registrar serie de television\n")
             .append("3. Registrar documental\n")
-            .append("4. Registrar video musical\n")
-            .append("5. Registrar conferencia cientifica\n")
+            .append("4. Registrar podcast\n")
+            .append("5. Registrar curso online\n")
             .append("6. Mostrar todos los contenidos\n")
             .append("7. Buscar contenido por ID\n")
             .append("8. Eliminar un contenido\n")
@@ -147,18 +147,18 @@ public class SistemaAudiovisual {
         System.out.printf("%nDocumental registrado correctamente.%nID asignado: %d%n", nuevoDoc.getId());
     }
 
-    private static void crearVideoMusical() {
-        System.out.println("\n--- REGISTRO DE VIDEO MUSICAL ---");
+    private static void crearPodcast() {
+        System.out.println("\n--- REGISTRO DE PODCAST ---");
 
         String tit = solicitarCadena("Titulo: ");
         int dur = solicitarMayorACero("Duracion en minutos: ");
-        String gen = solicitarCadena("Genero musical: ");
-        String art = solicitarCadena("Artista principal: ");
-        String sel = solicitarCadena("Sello discografico: ");
+        String gen = solicitarCadena("Genero o categoria: ");
+        String anf = solicitarCadena("Anfitrion principal: ");
+        String plat = solicitarCadena("Plataforma de emision: ");
         int año = solicitarMayorACero("Año de lanzamiento: ");
 
-        VideoMusical nuevoVideo = new VideoMusical(tit, dur, gen, art, sel, año);
-        int totalParticipantes = solicitarNoNegativo("Cantidad de actores participantes: ");
+        Podcast nuevoPodcast = new Podcast(tit, dur, gen, anf, plat, año);
+        int totalParticipantes = solicitarNoNegativo("Cantidad de invitados/participantes: ");
 
         int contador = 1;
         while (contador <= totalParticipantes) {
@@ -167,44 +167,39 @@ public class SistemaAudiovisual {
             String nac = solicitarCadena("Nacionalidad: ");
             int ed = solicitarMayorACero("Edad: ");
 
-            nuevoVideo.agregarActorParticipante(new Actor(nom, nac, ed));
+            nuevoPodcast.agregarActor(new Actor(nom, nac, ed));
             contador++;
         }
 
-        catalogo.add(nuevoVideo);
-        System.out.printf("%nVideo musical registrado correctamente.%nID asignado: %d%n", nuevoVideo.getId());
+        catalogo.add(nuevoPodcast);
+        System.out.printf("%nPodcast registrado correctamente.%nID asignado: %d%n", nuevoPodcast.getId());
     }
 
-    private static void crearConferencia() {
-        System.out.println("\n--- REGISTRO DE CONFERENCIA CIENTIFICA ---");
+    private static void crearCursoOnline() {
+        System.out.println("\n--- REGISTRO DE CURSO ONLINE ---");
 
         String tit = solicitarCadena("Titulo: ");
         int dur = solicitarMayorACero("Duracion en minutos: ");
-        String gen = solicitarCadena("Genero: ");
-        String tem = solicitarCadena("Tema central: ");
-        String instOrg = solicitarCadena("Institucion organizadora: ");
-        String fec = solicitarCadena("Fecha de realizacion: ");
-        String mod = solicitarCadena("Modalidad: ");
+        String gen = solicitarCadena("Area de estudio (Genero): ");
+        String plat = solicitarCadena("Plataforma educativa: ");
+        String niv = solicitarCadena("Nivel del curso: ");
 
-        ConferenciaCientifica nuevaConf = new ConferenciaCientifica(
-                tit, dur, gen, tem, instOrg, fec, mod
-        );
-
-        int totalInv = solicitarNoNegativo("Cantidad de investigadores: ");
+        CursoOnline nuevoCurso = new CursoOnline(tit, dur, gen, plat, niv);
+        int totalInv = solicitarNoNegativo("Cantidad de investigadores/instructores: ");
 
         int contador = 1;
         while (contador <= totalInv) {
-            System.out.println("\nDatos del investigador " + contador);
+            System.out.println("\nDatos del investigador/instructor " + contador);
             String nom = solicitarCadena("Nombre: ");
             String esp = solicitarCadena("Especialidad: ");
-            String instInv = solicitarCadena("Institucion del investigador: ");
+            String instInv = solicitarCadena("Institucion: ");
 
-            nuevaConf.agregarInvestigador(new Investigador(nom, esp, instInv));
+            nuevoCurso.agregarInvestigador(new Investigador(nom, esp, instInv));
             contador++;
         }
 
-        catalogo.add(nuevaConf);
-        System.out.printf("%nConferencia registrada correctamente.%nID asignado: %d%n", nuevaConf.getId());
+        catalogo.add(nuevoCurso);
+        System.out.printf("%nCurso online registrado correctamente.%nID asignado: %d%n", nuevoCurso.getId());
     }
 
     private static void listarCatalogo() {
