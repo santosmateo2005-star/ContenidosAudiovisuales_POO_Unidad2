@@ -1,0 +1,9 @@
+# Archivos compilados de Java
+/bin/
+*.class
+
+# Archivos temporales de Windows
+Thumbs.db
+
+# Archivos temporales de otros sistemas
+.DS_Store
